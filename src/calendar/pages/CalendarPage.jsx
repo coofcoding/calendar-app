@@ -1,10 +1,51 @@
-import { Navbar } from "../"
+import { Calendar } from 'react-big-calendar';
+import './Calendar.css';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+
+import { addHours } from 'date-fns';
+import { localizer } from '../../helpers';
+import { Navbar } from '../components/Navbar';
+
+const events = [{
+  title: 'boss birthdate',
+  notes: 'we have to buy the cake',
+  start: new Date(),
+  end: addHours( new Date(), 2 ),
+  bgColor: '#fafa',
+  user: {
+    _id: '123',
+    name: 'Kevin'
+  }
+}]
 
 export const CalendarPage = () => {
+
+  const eventStyleGetter = ( event, start, end, isSelected ) => {
+    
+    const style = {
+      backgroundColor: '#3cfa5d',
+      color: 'black',
+      opacity: '0.8',
+      borderRadius: '0px'
+    };
+
+    return {
+      style
+    };
+
+  }
+
   return (
     <>
       <Navbar />
-      Calendar
+      <Calendar
+        localizer={localizer}
+        events={events}
+        startAccessor="start"
+        endAccessor="end"
+        style={{ height: 'calc(100vh - 105px)' }}
+        eventPropGetter={ eventStyleGetter }
+      />
     </>
 
   )

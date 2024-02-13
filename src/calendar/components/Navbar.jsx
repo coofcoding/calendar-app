@@ -4,8 +4,8 @@ export const Navbar = () => {
     return (
         <div className='bg-violet-100 m-3 rounded-full p-4 flex justify-between items-center'>
             <div className='flex items-center gap-2'>
-                <CalendarIcon className="ml-4 h-6 w-6 text-violet-500" />
-                <span className='text-violet-500 font-semibold'>myCalendary</span>
+                <CalendarIcon className="ml-4 h-6 w-6 text-violet-700" />
+                <span className='text-violet-700 font-semibold'>myCalendary</span>
             </div>
             <button
                 type="button"

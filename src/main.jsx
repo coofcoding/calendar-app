@@ -14,9 +14,9 @@ import '@fontsource/poppins/800.css';
 import '@fontsource/poppins/900.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <BrowserRouter>
       <CalendarApp />
     </BrowserRouter>
-  </React.StrictMode>,
+  // </React.StrictMode>,
 )
