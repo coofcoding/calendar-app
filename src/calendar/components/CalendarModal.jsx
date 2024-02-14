@@ -1,4 +1,4 @@
-import { addHours } from 'date-fns';
+import { addHours, differenceInSeconds } from 'date-fns';
 import { useState } from 'react';
 import Modal from 'react-modal';
 import DatePicker from "react-datepicker";
@@ -22,6 +22,7 @@ export const CalendarModal = () => {
             ...formValues,
             [target.name]: target.value
         })
+        console.log(formValues)
     }
 
     const handleDateChange = ( event, changing ) => {
@@ -29,10 +30,25 @@ export const CalendarModal = () => {
             ...formValues,
             [changing]: event
         })
+
     }
 
     const onCloseModal = () => {
         setIsOpen(false)
+    }
+
+    const handleSubmit = ( event ) => {
+        event.preventDefault();
+
+        const differente = differenceInSeconds( formValues.end, formValues.start );
+
+        if ( isNaN(differente) || differente < 1 ){
+            console.error('Error in datetimes')
+            return;
+        }
+
+        if ( formValues.title.trim().length <= 0 ) return;
+
     }
 
     return (
@@ -44,7 +60,7 @@ export const CalendarModal = () => {
             closeTimeoutMS={200}
         >
             <h1 className='font-bold text-3xl mb-4'>New event</h1>
-            <form className="">
+            <form onSubmit={ handleSubmit }>
 
                 <div className="mb-2 flex flex-col">
                     <label className='text-slate-500 text-sm'>start date</label>
@@ -53,6 +69,8 @@ export const CalendarModal = () => {
                         onChange={ ( event ) => handleDateChange( event, 'start' ) }
                         className='w-full px-3 py-2 bg-slate-100 rounded-md border hover:border-violet-400 outline-none focus:ring ring-violet-200 focus:bg-slate-50 text-slate-500 placeholder:text-slate-300 transition-all duration-150 cursor-pointer'
                         dateFormat="Pp"
+                        showTimeSelect
+                        
                     />
                 </div>
 
@@ -64,6 +82,7 @@ export const CalendarModal = () => {
                         onChange={ ( event ) => handleDateChange( event, 'end' ) }
                         className='w-full px-3 py-2 bg-slate-100 rounded-md border hover:border-violet-400 outline-none focus:ring ring-violet-200 focus:bg-slate-50 text-slate-500 placeholder:text-slate-300 transition-all duration-150 cursor-pointer'
                         dateFormat="Pp"
+                        showTimeSelect
                     />
                 </div>
 
