@@ -2,17 +2,18 @@ import Modal from 'react-modal';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useEvent } from '../../hooks/useEvent';
+import { useUiStore } from '../../hooks/useUiStore';
 
 Modal.setAppElement('#root');
 
 export const CalendarModal = () => {
 
-    const { formValues, isOpen, titleClass, handleDateChange, handleChange, onCloseModal, handleSubmit } = useEvent();
+    const { formValues, isDateModalOpen, titleClass, handleDateChange, handleChange, handleSubmit, closeDateModal } = useEvent();
 
     return (
         <Modal
-            isOpen={isOpen}
-            onRequestClose={onCloseModal}
+            isOpen={isDateModalOpen}
+            onRequestClose={closeDateModal}
             className='p-6 bg-white rounded-lg text-slate-700 inline outline-none w-full max-w-[500px]'
             overlayClassName='modal-fondo'
             closeTimeoutMS={200}

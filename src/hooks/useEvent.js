@@ -2,10 +2,11 @@ import { addHours, differenceInSeconds } from "date-fns";
 import { useMemo } from "react";
 import { useState } from "react";
 import Swal from 'sweetalert2';
+import { useUiStore } from "./useUiStore";
 
 export const useEvent = () => {
     
-    const [isOpen, setIsOpen] = useState(true);
+    const { isDateModalOpen, closeDateModal } = useUiStore();
     const [formSubmitted, setFormSubmitted] = useState(false);
 
     const [formValues, setFormValues] = useState({
@@ -17,7 +18,6 @@ export const useEvent = () => {
 
     const titleClass = useMemo(() => {
         if ( !formSubmitted ) return '';
-        console.log('check')
         return ( formValues.title.trim().length <= 0 ) ? 'border-red-400 bg-red-100 placeholder:text-red-400 focus:text-slate-500' : ''
     }, [formValues.title, formSubmitted]) 
 
@@ -35,9 +35,9 @@ export const useEvent = () => {
         })
     }
 
-    const onCloseModal = () => {
-        setIsOpen(false)
-    }
+    // const onCloseModal = () => {
+        
+    // }
 
     const handleSubmit = ( event ) => {
         event.preventDefault();
@@ -61,12 +61,13 @@ export const useEvent = () => {
     }
 
     return {
+        closeDateModal,
         formValues,
         handleChange, 
         handleDateChange,
         handleSubmit,
-        isOpen, 
-        onCloseModal,
+        isDateModalOpen,
+        // onCloseModal,
         titleClass, 
     }
 }
