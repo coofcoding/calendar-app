@@ -1,55 +1,13 @@
-import { addHours, differenceInSeconds } from 'date-fns';
-import { useState } from 'react';
 import Modal from 'react-modal';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useEvent } from '../../hooks/useEvent';
 
 Modal.setAppElement('#root');
 
 export const CalendarModal = () => {
 
-    const [isOpen, setIsOpen] = useState(true);
-
-    const [formValues, setFormValues] = useState({
-        title: '',
-        notes: '',
-        start: new Date(),
-        end: addHours( new Date(), 2),
-    })
-
-    const handleChange = ({target}) => {
-        setFormValues({
-            ...formValues,
-            [target.name]: target.value
-        })
-        console.log(formValues)
-    }
-
-    const handleDateChange = ( event, changing ) => {
-        setFormValues({
-            ...formValues,
-            [changing]: event
-        })
-
-    }
-
-    const onCloseModal = () => {
-        setIsOpen(false)
-    }
-
-    const handleSubmit = ( event ) => {
-        event.preventDefault();
-
-        const differente = differenceInSeconds( formValues.end, formValues.start );
-
-        if ( isNaN(differente) || differente < 1 ){
-            console.error('Error in datetimes')
-            return;
-        }
-
-        if ( formValues.title.trim().length <= 0 ) return;
-
-    }
+    const { formValues, isOpen, titleClass, handleDateChange, handleChange, onCloseModal, handleSubmit } = useEvent();
 
     return (
         <Modal
@@ -91,7 +49,7 @@ export const CalendarModal = () => {
                     <label className='text-slate-500 text-sm'>title and notes</label>
                     <input
                         type="text"
-                        className="w-full px-3 py-2 bg-slate-100 rounded-md border hover:border-violet-400 outline-none focus:ring ring-violet-200 focus:bg-slate-50 text-slate-500 placeholder:text-slate-300 transition-all duration-150"
+                        className={`w-full px-3 py-2 bg-slate-100 rounded-md border hover:border-violet-400 outline-none focus:ring ring-violet-200 focus:bg-slate-50 text-slate-500 placeholder:text-slate-300 transition-all duration-150 ${ titleClass }`}
                         placeholder="doing something..."
                         name="title"
                         autoComplete="off"
