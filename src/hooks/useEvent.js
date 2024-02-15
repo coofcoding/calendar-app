@@ -6,7 +6,7 @@ import { useCalendarStore, useUiStore } from "./";
 export const useEvent = () => {
 
     const { isDateModalOpen, closeDateModal } = useUiStore();
-    const { activeEvent } = useCalendarStore();
+    const { activeEvent, startSavingEvent } = useCalendarStore();
     const [formSubmitted, setFormSubmitted] = useState(false);
 
     const [formValues, setFormValues] = useState({
@@ -50,7 +50,7 @@ export const useEvent = () => {
 
     // }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async(event) => {
         event.preventDefault();
         setFormSubmitted(true);
 
@@ -68,6 +68,11 @@ export const useEvent = () => {
         }
 
         if (formValues.title.trim().length <= 0) return;
+
+        await startSavingEvent( formValues )
+
+        closeDateModal();
+        setFormSubmitted(false);
 
     }
 

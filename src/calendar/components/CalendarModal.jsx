@@ -2,7 +2,6 @@ import Modal from 'react-modal';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useEvent } from '../../hooks/useEvent';
-import { useUiStore } from '../../hooks/useUiStore';
 
 Modal.setAppElement('#root');
 
