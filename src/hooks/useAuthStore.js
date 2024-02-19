@@ -1,35 +1,60 @@
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { calendarApi } from './../api';
+import { calendarApi } from "./../api";
+import { checking, clearErrorMessage, onLogin, onLogout } from "../store";
 
 export const useAuthStore = () => {
+  const { status, user, errorMessage } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
 
-    const { status, user, errorMessage } = useSelector( state => state.auth );
-    const dispatch = useDispatch();
+  const startLogin = async ({ email, password }) => {
+    console.log({ email, password });
 
-    const startLogin = async({ email, password }) => {
+    try {
+      dispatch(checking());
+      const { data } = await calendarApi.post("/auth", { email, password });
 
-        console.log({ email, password })
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("token-init-date", new Date().getTime());
 
-        try {
-            const resp = await calendarApi.post('/auth', { email, password })
-            console.log({ resp })
-
-        } catch (error) {
-            console.log(error.response.data)
-        }
-
+      dispatch(onLogin({ name: data.name, uid: data.uid }));
+    } catch (error) {
+      dispatch(onLogout("Incorrect credentials"));
+      setTimeout(() => {
+        dispatch(clearErrorMessage());
+      }, 1000);
     }
+  };
 
-    return {
+  const startRegister = async ({ name, email, password }) => {
+    try {
+      dispatch(checking());
+      const { data } = await calendarApi.post("/auth/new", {
+        name,
+        email,
+        password,
+      });
 
-        //* Properties
-        status,
-        user,
-        errorMessage,
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("token-init-date", new Date().getTime());
 
-        //* Methods
-        startLogin,
+      dispatch(onLogin({ name: data.name, uid: data.uid }));
+    } catch (error) {
+      !!error.response.data.msg && dispatch(onLogout(error.response.data.msg));
+      setTimeout(() => {
+        dispatch(clearErrorMessage());
+      }, 1000);
+    }
+  };
 
-    };
-}
+  return {
+    //* Properties
+    status,
+    user,
+    errorMessage,
+
+    //* Methods
+    startLogin,
+    startRegister,
+  };
+};

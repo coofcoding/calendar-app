@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 import { useAuthStore, useForm } from "../../hooks";
 import { useState } from "react";
+import { useEffect } from "react";
 
 const loginFormFields = {
   loginEmail: "",
@@ -15,8 +16,7 @@ const registerFormField = {
 };
 
 export const LoginPage = () => {
-
-  const { startLogin } = useAuthStore();
+  const { startLogin, startRegister, errorMessage } = useAuthStore();
 
   const [passwordMatch, setPasswordMatch] = useState(true);
 
@@ -26,6 +26,20 @@ export const LoginPage = () => {
     onInputChange: onLoginInputChange,
   } = useForm(loginFormFields);
 
+  useEffect(() => {
+
+    if(errorMessage !== undefined) {
+      Swal.fire({
+        title: 'Error in authentication',
+        text: errorMessage,
+        timer: 6000,
+        icon: 'error',
+        showConfirmButton: false
+      });
+    };
+
+  }, [errorMessage]);
+
   const {
     registerName,
     registerEmail,
@@ -34,12 +48,12 @@ export const LoginPage = () => {
     onInputChange: onRegisterInputChange,
   } = useForm(registerFormField);
 
-  const loginSubmit = (event) => {
+  const loginSubmit = event => {
     event.preventDefault();
-    startLogin({ email: loginEmail, password: loginPassword })
+    startLogin({ email: loginEmail, password: loginPassword });
   };
 
-  const registerSubmit = (event) => {
+  const registerSubmit = event => {
     event.preventDefault();
 
     if (registerPassword !== registerConfirmPassword) {
@@ -48,14 +62,10 @@ export const LoginPage = () => {
     }
 
     setPasswordMatch(true);
-    console.log({
-      registerName,
-      registerEmail,
-      registerPassword,
-      registerConfirmPassword,
-    });
+    
+    startRegister({ name: registerName, email: registerEmail, password: registerPassword });
+
   };
-  // const { loginEmail, loginPassword, onInputChange: onLoginInputChange } = useForm( registerFormField );
 
   return (
     <>
@@ -140,7 +150,7 @@ export const LoginPage = () => {
 
             {!passwordMatch && (
               <div className="my-2">
-                <div className="text-red-400 p-3 border border-red-400 bg-gradient-to-r from-red-800/30 to-red-700/30 rounded-md flex items-center gap-2 justify-start">
+                <div className="text-red-400 p-3 border border-red-400 bg-gradient-to-r from-red-800/30 rounded-md flex items-center gap-2 justify-start">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
