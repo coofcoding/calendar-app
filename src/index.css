@@ -40,14 +40,10 @@ body {
   width: 5px;
 }
 
-::-webkit-scrollbar-track {
-  border-radius: 10px;
-}
-
 ::-webkit-scrollbar-thumb {
   background-clip: content-box;
   border: 5px solid transparent !important;
-  background: #a4a4a4;
+  background: #100931;
   border-radius: 50px;
 }
 
