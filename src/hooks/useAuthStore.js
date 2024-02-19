@@ -58,10 +58,15 @@ export const useAuthStore = () => {
       localStorage.setItem("token-init-date", new Date().getTime());
       dispatch(onLogin({ name: data.name, uid: data.uid }));
     } catch (error) {
-        localStorage.clear();
-        dispatch(onLogout());
+      localStorage.clear();
+      dispatch(onLogout());
     }
   };
+
+  const startLogout = () => {
+    localStorage.clear();
+    dispatch( onLogout() );
+  }
 
   return {
     //* Properties
@@ -73,5 +78,6 @@ export const useAuthStore = () => {
     startLogin,
     startRegister,
     checkAuthToken,
+    startLogout
   };
 };
