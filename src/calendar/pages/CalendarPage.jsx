@@ -7,10 +7,11 @@ import { Navbar, CalendarEvent, CalendarModal, FabDelete, FabAddNew } from '../'
 import { useState } from 'react';
 import { useUiStore } from '../../hooks/useUiStore';
 import { useCalendarStore } from '../../hooks';
+import { useEffect } from 'react';
 
 export const CalendarPage = () => {
   
-  const { events, setActiveEvent } = useCalendarStore();
+  const { events, setActiveEvent, startLoadingEvents } = useCalendarStore();
   const { openDateModal } = useUiStore();
   const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'day');
 
@@ -40,6 +41,13 @@ export const CalendarPage = () => {
   const ViewChanged = (event) => {
     localStorage.setItem('lastView', event);
   }
+
+  useEffect(() => {
+
+    startLoadingEvents();
+  
+  }, []);
+  
 
   return (
     <>
