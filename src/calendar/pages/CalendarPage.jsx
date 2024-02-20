@@ -6,22 +6,27 @@ import { localizer } from '../../helpers';
 import { Navbar, CalendarEvent, CalendarModal, FabDelete, FabAddNew } from '../';
 import { useState } from 'react';
 import { useUiStore } from '../../hooks/useUiStore';
-import { useCalendarStore } from '../../hooks';
+import { useAuthStore, useCalendarStore } from '../../hooks';
 import { useEffect } from 'react';
 
 export const CalendarPage = () => {
   
+  const { user } = useAuthStore();
   const { events, setActiveEvent, startLoadingEvents } = useCalendarStore();
   const { openDateModal } = useUiStore();
   const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'day');
 
   const eventStyleGetter = ( event, start, end, isSelected ) => {
+
+    const isMyEvent = ( user.uid === event.user._id ) || ( user.uid === event.user.uid );
     
     const style = {
-      backgroundColor: '#3cfa5d',
+      backgroundColor: isMyEvent ? '#c9a3ff' : '#b0b0b0',
       color: 'black',
       opacity: '0.8',
-      borderRadius: '0px'
+      borderRadius: '4px',
+      border: '2px solid #00000040',
+      fontSize: '13px',
     };
 
     return {
