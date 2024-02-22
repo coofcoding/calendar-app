@@ -21,7 +21,7 @@ export const useAuthStore = () => {
       dispatch(onLogout("Incorrect credentials"));
       setTimeout(() => {
         dispatch(clearErrorMessage());
-      }, 1000);
+      }, 10);
     }
   };
 
@@ -42,7 +42,7 @@ export const useAuthStore = () => {
       !!error.response.data.msg && dispatch(onLogout(error.response.data.msg));
       setTimeout(() => {
         dispatch(clearErrorMessage());
-      }, 1000);
+      }, 10);
     }
   };
 
