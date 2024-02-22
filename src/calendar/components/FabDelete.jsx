@@ -16,5 +16,5 @@ export const FabDelete = () => {
         >
             <TrashIcon className='h-6 w-6 text-white' />
         </button>
-    )
+    ) 
 }
